@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  backend:
+    volumes: []
+
+  frontend:
+    ports:
+      - "80:80"
+    command: ["nginx", "-g", "daemon off;"]
+    volumes: []
+
+# Câu lệnh để chạy trên server
+# docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build

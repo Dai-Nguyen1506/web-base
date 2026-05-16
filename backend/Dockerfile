@@ -14,7 +14,7 @@ RUN apt-get update \
 # Copy requirements và cài đặt
 COPY requirements.txt /app/
 # Nếu bạn đã bỏ comment các thư viện trong requirements.txt, hãy chạy lệnh dưới:
-# RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy toàn bộ source code
 COPY . /app/

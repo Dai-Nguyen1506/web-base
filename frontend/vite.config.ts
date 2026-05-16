@@ -7,5 +7,12 @@ export default defineConfig({
   server: {
     host: true, // Listen on all local IPs (needed for Docker)
     port: 3000,
-  }
+    proxy: {
+      '/api': {
+        target: 'http://backend:8000',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
 })

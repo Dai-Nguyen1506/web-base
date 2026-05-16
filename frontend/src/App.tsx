@@ -1,5 +1,3 @@
-import React from 'react';
-
 // App.tsx là component gốc của ứng dụng.
 // Tại đây bạn có thể cấu hình React Router để điều hướng giữa các Pages.
 // Ví dụ: <BrowserRouter><Routes><Route path="/" element={<HomePage />} /></Routes></BrowserRouter>
