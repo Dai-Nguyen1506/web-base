@@ -1,22 +1,23 @@
 {
-  "name": "Web Base Fullstack",
-  "dockerComposeFile": ["../docker-compose.yml"],
+  "name": "Web Fullstack",
+  "dockerComposeFile": ["../../docker-compose.yml", "../../docker-compose.override.yml"],
   "service": "backend",
   "workspaceFolder": "/workspace",
-  
+  "runServices": ["db-postgre", "backend", "frontend"],
+  "shutdownAction": "stopCompose",
+
   "features": {
-    // 1. Cài Docker vào trong để gọi các container khác
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
       "version": "latest",
       "enableNonRootDocker": "true",
-      "moby": "true"
+      "moby": "false"
     },
-    // 2. Cài Node.js vào container Backend để xử lý Frontend
     "ghcr.io/devcontainers/features/node:1": {
       "version": "18"
     }
   },
-  
+  "postCreateCommand": "apt-get update && apt-get install -y make && pip install -r /workspace/backend/requirements.txt",
+
   "customizations": {
     "vscode": {
       "extensions": [

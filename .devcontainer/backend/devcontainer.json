@@ -1,13 +1,24 @@
 {
     "name": "Backend Environment Developer",
-    "dockerComposeFile": ["../../docker-compose.yml"],
+    "dockerComposeFile": ["../../docker-compose.yml", "../../docker-compose.override.yml"],
     "service": "backend",
     "workspaceFolder": "/workspace",
+    "runServices": ["db-postgre", "backend", "frontend"],
+    "shutdownAction": "stopCompose",
+    "features": {
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+        "version": "latest",
+        "enableNonRootDocker": "true",
+        "moby": "false"
+    }
+    },
+    "postCreateCommand": "apt-get update && apt-get install -y make && pip install -r /workspace/backend/requirements.txt",
     "customizations": {
     "vscode": {
         "extensions": [
         "ms-python.python",
-        "ms-python.vscode-pylance"
+        "ms-python.vscode-pylance",
+        "ms-azuretools.vscode-docker"
         ]
     }
     },
