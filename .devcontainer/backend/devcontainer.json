@@ -6,11 +6,16 @@
     "runServices": ["db-postgre", "backend", "frontend"],
     "shutdownAction": "stopCompose",
     "features": {
-    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
-        "version": "latest",
-        "enableNonRootDocker": "true",
-        "moby": "false"
-    }
+        "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+            "version": "latest",
+            "enableNonRootDocker": "true",
+            "moby": "false"
+        },
+        "ghcr.io/devcontainers/features/common-utils:2": {
+            "installZsh": "true",
+            "configureZshAsDefaultShell": "true",
+            "installOhMyZsh": "true"
+        }
     },
     "postCreateCommand": "apt-get update && apt-get install -y make && pip install -r /workspace/backend/requirements.txt",
     "customizations": {
