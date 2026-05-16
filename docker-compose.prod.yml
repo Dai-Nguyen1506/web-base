@@ -3,13 +3,10 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    image: web-base-frontend:prod
-    container_name: Frontend
+      target: production
+    image: ${COMPOSE_PROJECT_NAME}-frontend:prod
     ports:
       - "80:80"
-    depends_on:
-      - backend
-    restart: unless-stopped
 
 # Chạy production:
 # docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build

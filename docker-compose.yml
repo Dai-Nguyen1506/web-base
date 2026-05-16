@@ -1,13 +1,12 @@
 services:
   db-postgre:
     image: postgres:15-alpine
-    container_name: PostgreSQL
     environment:
       - POSTGRES_USER=${POSTGRES_USER:-postgres}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
       - POSTGRES_DB=${POSTGRES_DB:-web_base}
     ports:
-      - "15432:5432"
+      - "${HOST_PORT_DB:-15432}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     restart: unless-stopped
@@ -16,15 +15,19 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: Backend
     env_file:
       - .env
     ports:
-      - "8000:8000"
+      - "${HOST_PORT_BACKEND:-8000}:8000"
     environment:
       - DATABASE_URL=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db-postgre:5432/${POSTGRES_DB:-web_base}
     depends_on:
       - db-postgre
+    restart: unless-stopped
+
+  frontend:
+    depends_on:
+      - backend
     restart: unless-stopped
 
 volumes:
