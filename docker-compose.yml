@@ -17,30 +17,14 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     container_name: Backend
+    env_file:
+      - .env
     ports:
       - "8000:8000"
     environment:
       - DATABASE_URL=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db-postgre:5432/${POSTGRES_DB:-web_base}
     depends_on:
       - db-postgre
-    volumes:
-      - ./backend:/app
-      - .:/workspace
-    restart: unless-stopped
-
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    container_name: Frontend
-    ports:
-      - "3000:3000"
-    depends_on:
-      - backend
-    volumes:
-      - ./frontend:/app
-      - .:/workspace
-    command: npm run dev -- --host 0.0.0.0
     restart: unless-stopped
 
 volumes:

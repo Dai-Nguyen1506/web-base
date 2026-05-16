@@ -1,14 +1,15 @@
-version: '3.8'
-
 services:
-  backend:
-    volumes: []
-
   frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: web-base-frontend:prod
+    container_name: Frontend
     ports:
       - "80:80"
-    command: ["nginx", "-g", "daemon off;"]
-    volumes: []
+    depends_on:
+      - backend
+    restart: unless-stopped
 
-# Câu lệnh để chạy trên server
+# Chạy production:
 # docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
