@@ -1,0 +1,15 @@
+{
+    "name": "Backend Environment Developer",
+    "dockerComposeFile": ["../../docker-compose.yml"],
+    "service": "backend",
+    "workspaceFolder": "/workspace",
+    "customizations": {
+    "vscode": {
+        "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance"
+        ]
+    }
+    },
+    "remoteUser": "root"
+}

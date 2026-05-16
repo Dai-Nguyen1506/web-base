@@ -1,9 +1,9 @@
 version: '3.8'
 
 services:
-  db:
+  db-postgre:
     image: postgres:15-alpine
-    container_name: web_base_db
+    container_name: PostgreSQL
     environment:
       - POSTGRES_USER=${POSTGRES_USER:-postgres}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
@@ -18,26 +18,30 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: web_base_backend
+    container_name: Backend
     ports:
       - "8000:8000"
     environment:
-      - DATABASE_URL=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db:5432/${POSTGRES_DB:-web_base}
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db-postgre:5432/${POSTGRES_DB:-web_base}
     depends_on:
-      - db
+      - db-postgre
     volumes:
       - ./backend:/app
+      - .:/workspace
     restart: unless-stopped
 
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: web_base_frontend
+    container_name: Frontend
     ports:
       - "3000:80"
     depends_on:
       - backend
+    volumes:
+      - .frontend:/app
+      - .:/workspace
     restart: unless-stopped
 
 volumes:

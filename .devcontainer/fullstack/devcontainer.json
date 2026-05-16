@@ -1,0 +1,32 @@
+{
+  "name": "Web Base Fullstack",
+  "dockerComposeFile": ["../docker-compose.yml"],
+  "service": "backend",
+  "workspaceFolder": "/workspace",
+  
+  "features": {
+    // 1. Cài Docker vào trong để gọi các container khác
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+      "version": "latest",
+      "enableNonRootDocker": "true",
+      "moby": "true"
+    },
+    // 2. Cài Node.js vào container Backend để xử lý Frontend
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "18"
+    }
+  },
+  
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",        
+        "ms-python.vscode-pylance",
+        "dbaeumer.vscode-eslint",  
+        "esbenp.prettier-vscode",
+        "ms-azuretools.vscode-docker" 
+      ]
+    }
+  },
+  "remoteUser": "root"
+}
