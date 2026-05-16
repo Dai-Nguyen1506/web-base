@@ -27,4 +27,4 @@ settings = Settings()
 
 # Kiểm tra
 if __name__ == '__main__':
-    print('Project Name:', settings.PROJECT_NAME)
+    print('Project Name:', settings.DATABASE_URL)
