@@ -1,6 +1,6 @@
 # --- ĐỊNH NGHĨA CÁC BIẾN MÔI TRƯỜNG ---
 COMPOSE_BASE = docker compose -f docker-compose.yml
-COMPOSE_DEV  = $(COMPOSE_BASE) -f docker-compose.dev.yml
+COMPOSE_DEV  = docker compose
 COMPOSE_PROD = $(COMPOSE_BASE) -f docker-compose.prod.yml
 
 # Bổ sung các lệnh logs lẻ vào danh sách .PHONY
