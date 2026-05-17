@@ -1,2 +1,4 @@
-# Thư mục models dùng để định nghĩa các bảng trong DB thông qua SQLAlchemy.
-# Ví dụ: models/user.py sẽ kế thừa từ models/base.py
+from app.core.database import Base
+from app.models.user import User
+
+# noqa
