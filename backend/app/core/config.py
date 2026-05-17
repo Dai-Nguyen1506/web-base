@@ -1,6 +1,5 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-
 class Settings(BaseSettings):
     # 1. Cấu hình API chung
     PROJECT_NAME: str
@@ -24,7 +23,3 @@ class Settings(BaseSettings):
 
 # Khởi tạo một đối tượng settings duy nhất để dùng chung cho toàn bộ hệ thống Backend
 settings = Settings()
-
-# Kiểm tra
-if __name__ == '__main__':
-    print('Project Name:', settings.PROJECT_NAME)

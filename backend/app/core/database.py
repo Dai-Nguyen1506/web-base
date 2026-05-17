@@ -1,5 +1,5 @@
 from typing import AsyncGenerator
-from sqlalchemy.orm import declarative_base
+from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 from app.core.config import settings
 
@@ -27,7 +27,8 @@ AsyncSessionLocal = async_sessionmaker(
 )
 
 # Tạo lớp cơ sở
-Base = declarative_base()
+class Base(DeclarativeBase):
+    pass
 
 # Dependancy cấp kết nối dưới dạng Async Generator cho các API
 async def get_db() -> AsyncGenerator[AsyncSession, None]:

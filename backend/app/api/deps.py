@@ -6,11 +6,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from app.core.database import get_db
-from app.models.user import User
-from app.schemas.token import TokenData
+from app.models.user_model import User
+from app.schemas.token_schema import TokenData
 from app.core.config import settings
 from app.core.logger import logger
 from app.core.exceptions import InvalidLoginException
+from app.crud.user_crud import user_crud
 
 secret_key=settings.SECRET_KEY
 algorithm=settings.ALGORITHM
@@ -38,8 +39,7 @@ async def get_current_user(
         logger.error(f"Lỗi kiểm tra JWT: {str(e)}")
         raise credentials_exception
 
-    result = await db.execute(select(User).where(User.id == int(token_data.user_id)))
-    user = result.scalars().first()
+    user = await user_crud.get(db, id=int(token_data.user_id))
 
     if user is None:
         raise credentials_exception

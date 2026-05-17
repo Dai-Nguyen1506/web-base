@@ -1,41 +1,20 @@
 from fastapi import APIRouter, Depends
-
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
 
 from app.core.database import get_db
-from app.models.user import User
-from app.schemas.user import UserCreate, UserResponse
-from app.core.security import hash_password
+from app.schemas.user_schema import UserCreate, UserResponse
+from app.services.user_service import user_service
 from app.api.deps import get_current_user
-from app.core.exceptions import EmailAlreadyExistsException
+from app.models.user_model import User
 
 router = APIRouter()
 
-@router.post("/", response_model=UserResponse)
+@router.post("/register", response_model=UserResponse)
 async def register_user(user_in: UserCreate, db: AsyncSession = Depends(get_db)):
-    result = await db.execute(select(User).where(User.email == user_in.email))
-    existed_user = result.scalars().first()
+    # Đẩy toàn bộ trách nhiệm xử lý logic cho user_service
+    return await user_service.register_new_user(db, user_in=user_in)
 
-    if existed_user:
-        raise EmailAlreadyExistsException()
-    
-    hashed_pwd = hash_password(user_in.password)
-    new_user = User(
-        email=user_in.email,
-        password_hashed=hashed_pwd,
-        is_activate=True
-    )
-
-    db.add(new_user)
-    await db.commit()
-    await db.refresh(new_user)
-
-    return new_user
-
-@router.post("/me", response_model=UserResponse)
+@router.get("/me", response_model=UserResponse)
 async def read_user_me(current_user: User = Depends(get_current_user)):
-    """
-    API lấy thông tin người dùng
-    """
+    # Giữ nguyên luồng lấy thông tin cá nhân qua ngự lâm quân bảo mật
     return current_user
