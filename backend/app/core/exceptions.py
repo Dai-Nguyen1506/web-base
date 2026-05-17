@@ -13,9 +13,9 @@ class CustomAppException(Exception):
 
 class EmailAlreadyExistsException(CustomAppException):
     status_code = status.HTTP_400_BAD_REQUEST
-    detail = "Email này đã được đăng ký trên hệ thống."
+    detail = "Email này đã tồn tại."
 
-class InvalidCredentialsException(CustomAppException):
+class InvalidLoginException(CustomAppException):
     status_code = status.HTTP_401_UNAUTHORIZED
     detail = "Email hoặc mật khẩu không chính xác."
 
@@ -29,7 +29,7 @@ async def global_app_exception_handler(request: Request, exc: CustomAppException
         content={
             "success": False,
             "error": {
-                "code": exc.__class__.__name__, # Tự động lấy tên Class làm Code lỗi (ví dụ: EmailAlreadyExistsException)
+                "code": exc.__class__.__name__, # Lấy tên Class làm mã lỗi
                 "message": exc.detail
             }
         },

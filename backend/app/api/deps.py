@@ -1,27 +1,30 @@
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError
-from sqlalchemy.orm import Session
+
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
 
 from app.core.database import get_db
 from app.models.user import User
 from app.schemas.token import TokenData
-from app.core.security import secret_key, algorithm
+from app.core.config import settings
+from app.core.logger import logger
+from app.core.exceptions import InvalidLoginException
+
+secret_key=settings.SECRET_KEY
+algorithm=settings.ALGORITHM
 
 oauth_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/login")
 
-def get_current_user(
-        db: Session = Depends(get_db),
+async def get_current_user(
+        db: AsyncSession = Depends(get_db),
         token: str = Depends(oauth_scheme)
     ) -> User:
     """
     Hàm xác thực danh tính của user qua token
     """
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Không thể xác thực thông tin đăng nhập",
-        headers={"WWW-Authenticate": "Bearer"}
-    )
+    credentials_exception = InvalidLoginException()
 
     try:
         payload = jwt.decode(token, secret_key, algorithms=[algorithm])
@@ -31,10 +34,13 @@ def get_current_user(
             raise credentials_exception
 
         token_data = TokenData(user_id=user_id)
-    except:
+    except JWTError as e:
+        logger.error(f"Lỗi kiểm tra JWT: {str(e)}")
         raise credentials_exception
 
-    user = db.query(User).filter(User.id == int(token_data.user_id)).first()
+    result = await db.execute(select(User).where(User.id == int(token_data.user_id)))
+    user = result.scalars().first()
+
     if user is None:
         raise credentials_exception
 

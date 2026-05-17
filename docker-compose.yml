@@ -20,7 +20,7 @@ services:
     ports:
       - "${HOST_PORT_BACKEND:-8000}:8000"
     environment:
-      - DATABASE_URL=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db-postgre:5432/${POSTGRES_DB:-web_base}
+      - DATABASE_URL=postgresql+asyncpg://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db-postgre:5432/${POSTGRES_DB:-web_base}
     depends_on:
       - db-postgre
     restart: unless-stopped
