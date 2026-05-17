@@ -19,6 +19,8 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
+*.log
+app.log
 
 # Node / Frontend
 node_modules/
