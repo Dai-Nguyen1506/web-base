@@ -19,5 +19,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy toàn bộ source code
 COPY . /app/
 
+# Cấp quyền thực thi cho file script entrypoint trong môi trường Linux
+RUN chmod +x /app/entrypoint.sh
+
+# Giăng bệ phóng Entrypoint (Mỗi lần boot container đều phải đi qua đây)
+ENTRYPOINT ["/app/entrypoint.sh"]
+
 # Khởi chạy server FastAPI bằng Uvicorn
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
