@@ -23,7 +23,7 @@ COPY . /app/
 RUN chmod +x /app/entrypoint.sh
 
 # Giăng bệ phóng Entrypoint (Mỗi lần boot container đều phải đi qua đây)
-ENTRYPOINT ["/app/entrypoint.sh"]
+ENTRYPOINT ["sh", "/app/entrypoint.sh"]
 
 # Khởi chạy server FastAPI bằng Uvicorn
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
