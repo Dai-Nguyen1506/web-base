@@ -23,6 +23,10 @@ class UserNotFoundException(CustomAppException):
     status_code = status.HTTP_404_NOT_FOUND
     detail = "Không tìm thấy người dùng này."
 
+class DisconnectedDatabaseException(CustomAppException):
+    status_code = status.HTTP_503_SERVICE_UNAVAILABLE
+    detail = "Mất kết nối với Database."
+
 async def global_app_exception_handler(request: Request, exc: CustomAppException):
     return JSONResponse(
         status_code=exc.status_code,
