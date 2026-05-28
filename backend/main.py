@@ -34,4 +34,4 @@ async def health_check(db: AsyncSession = Depends(get_db)):
         }
     except Exception as e:
         logger.error(f"Lỗi kết nối tới Database: {str(e)}")
-        DisconnectedDatabaseException()
+        raise DisconnectedDatabaseException()
